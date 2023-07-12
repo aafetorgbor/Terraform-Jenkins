@@ -1,1 +1,44 @@
+# Terraform for IBM provide (REQUIRED)
+terraform {
+  required_providers {
+    ibm = {
+      source = "IBM-Cloud/ibm"
+    }
+  }
+}
 
+# Configure the IBM Provider (REQUIRED)
+provider "ibm" {
+  region = "us-south"
+}
+
+# Create code engine project
+data "ibm_resource_group" "group" {
+  name = "Terraform-RG"
+}
+
+resource "ibm_code_engine_project" "code_engine_project_instance" {
+  name              = "terraform-test-3"
+  resource_group_id = data.ibm_resource_group.group.id
+}
+
+resource "ibm_code_engine_app" "code_engine_app_instance" {
+  project_id      = ibm_code_engine_project.code_engine_project_instance.project_id
+  name            = "terraform-app"
+  image_reference = "icr.io/codeengine/helloworld"
+
+  run_env_variables {
+    type  = "literal"
+    name  = "Environment"
+    value = "dev"
+  }
+}
+
+
+output "terraform_app_name"{
+  value = ibm_code_engine_project.code_engine_project_instance.name
+}
+
+output "terraform_app_state"{
+  value = ibm_code_engine_project.code_engine_project_instance.status
+}
