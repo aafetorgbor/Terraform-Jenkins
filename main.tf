@@ -28,9 +28,9 @@ resource "ibm_code_engine_secret" "code_engine_secret_instance" {
   format = "generic"
 
   data = {
-        DATABASE_PASSWORD = "mydatabasepassword"
-        elastic_password  = "myelasticpassword"
         kibana_password   = var.kibana_password
+        elastic_password  = var.elastic_password
+        database_password = var.database_password
   }
 }
 
