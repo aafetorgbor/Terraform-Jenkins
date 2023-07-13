@@ -18,7 +18,7 @@ data "ibm_resource_group" "group" {
 }
 
 resource "ibm_code_engine_project" "code_engine_project_instance" {
-  name              = "terraform-test-5"
+  name              = "terraform-test-6"
   resource_group_id = data.ibm_resource_group.group.id
 }
 
