@@ -30,7 +30,7 @@ resource "ibm_code_engine_secret" "code_engine_secret_instance" {
   data = {
         DATABASE_PASSWORD = "mydatabasepassword"
         elastic_password  = "myelasticpassword"
-        kibana_password   = var.kibana_password
+        kibana_password   = "var.kibana_password"
   }
 }
 
