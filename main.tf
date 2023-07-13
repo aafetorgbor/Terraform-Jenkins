@@ -18,8 +18,20 @@ data "ibm_resource_group" "group" {
 }
 
 resource "ibm_code_engine_project" "code_engine_project_instance" {
-  name              = "terraform-test-6"
+  name              = "terraform-test-7"
   resource_group_id = data.ibm_resource_group.group.id
+}
+
+resource "ibm_code_engine_secret" "code_engine_secret_instance" {
+  project_id = ibm_code_engine_project.code_engine_project_instance.project_id
+  name = "my-secret"
+  format = "generic"
+
+  data = {
+        DATABASE_PASSWORD = "mydatabasepassword"
+        elastic_password  = "myelasticpassword"
+        kibana_password   = var.kibana_password
+  }
 }
 
 resource "ibm_code_engine_app" "code_engine_app_instance" {
@@ -29,8 +41,31 @@ resource "ibm_code_engine_app" "code_engine_app_instance" {
 
   run_env_variables {
     type  = "literal"
-    name  = "Environment"
-    value = "dev"
+    name  = "ENVIRONMENT"
+    value = "Dev"
+  }
+  
+  run_env_variables {
+    type  = "literal"
+    name  = "USERNAME"
+    value = "user-2"
+  }
+
+  run_env_variables {
+    type  = "literal"
+    name  = "sql_server_ip"
+    value = "100.100.100.100"
+  }
+
+  run_env_variables {
+    type  = "literal"
+    name  = "DISABLED_COS"
+    value = "True"
+  }
+
+  run_env_variables {
+    type  = "secret_full_reference"
+    reference = "my-secret" 
   }
 }
 
